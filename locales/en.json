@@ -1,0 +1,22 @@
+{
+  "dispatch": {
+    "title": "Suspicious Activity",
+    "code": "10-34",
+    "priority": "Priority 3",
+    "message": "Suspicious activity reported at %s, possible robbery in progress."
+  },
+
+  "robbing": {
+    "target_label": "Lockpick Mailbox",
+    "label": "Robbing mailbox...",
+    "cancelled": "You have cancelled robbing the mailbox.",
+    "success": "You have successfully robbed the mailbox.",
+    "failedlockpick": "You have failed to lockpick the mailbox."
+  },
+  
+  "error": {
+    "just_robbed": "This mailbox has just been robbed!",
+    "nothing_found": "You found nothing of value.",
+    "mailbox_not_found": "No mailbox found nearby."
+  }
+}
