@@ -1,5 +1,5 @@
 local utils = {}
-local client = require 'configs.client'
+local client = require 'configs.cl_config'
 
 utils.isNearCoords = function(entity, coords)
     local entityCoords = GetEntityCoords(entity)

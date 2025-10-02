@@ -1,5 +1,5 @@
-local client = require("configs.client")
-local utils = require("utils.client")
+local client = require("configs.cl_config")
+local utils = require("utils.cl_utils")
 local dispatch = require("bridge.dispatch.client")
 
 local function playRobAnimation(ped)
@@ -92,5 +92,6 @@ local function startUtils()
     },
   })
 end
+
 
 startUtils()

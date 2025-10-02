@@ -1,4 +1,4 @@
-local client = require 'configs.client'
+local client = require 'configs.cl_config'
 local dispatch = {}
 
 dispatch.sendCall = function(data)
@@ -26,7 +26,7 @@ dispatch.sendCall = function(data)
         flash = false,
       },
       radius = {
-        enabled = true,
+        enabled = false,
         color = 3,
         scale = 25.0,
       },

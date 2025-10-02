@@ -1,6 +1,6 @@
-local clConfig = require 'configs.client'
-local svConfig = require 'configs.server'
-local utils = require 'utils.server'
+local clConfig = require 'configs.cl_config'
+local svConfig = require 'configs.sv_config'
+local utils = require 'utils.sv_utils'
 local inventory = require 'bridge.inventory.server'
 local mailCache = {}
 

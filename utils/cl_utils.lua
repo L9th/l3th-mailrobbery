@@ -1,4 +1,4 @@
-local client = require 'configs.client'
+local client = require 'configs.cl_config'
 local utils = {}
 
 utils.notify = function(data)
@@ -65,9 +65,9 @@ utils.getTargetOptions = function(options)
         for i = 1, #options do
             targetOptions[i] = {
                 icon = options[i].icon,
-                item = options[i].items,
+                items = type(options[i].items) == 'table' and options[i].items or { options[i].items },
                 label = options[i].label,
-                onSelect = options[i].onSelect, -- ox supports this
+                onSelect = options[i].onSelect,
                 canInteract = options[i].canInteract,
                 distance = options[i].distance or 2.0,
             }
@@ -79,7 +79,7 @@ utils.getTargetOptions = function(options)
                 icon = options[i].icon,
                 item = options[i].items,
                 label = options[i].label,
-                action = options[i].onSelect, -- qb expects action/event instead
+                action = options[i].onSelect,
                 canInteract = options[i].canInteract,
                 distance = options[i].distance or 2.0,
             }
@@ -88,6 +88,7 @@ utils.getTargetOptions = function(options)
 
     return targetOptions
 end
+
 
 utils.addModel = function(data)
     if client.interaction == 'ox' then
