@@ -1,0 +1,22 @@
+{
+  "dispatch": {
+    "title": "Mistænkte Aktivitet",
+    "code": "114",
+    "priority": "Priority 3",
+    "message": "Mistænktlig aktivitet er anmeldt ved %s, mulig igangværende røveri."
+  },
+
+  "robbing": {
+    "target_label": "Lockpicker Postkasse",
+    "label": "Røver Postkasse...",
+    "cancelled": "Du har annulleret røveriet af postkassen.",
+    "success": "Du har successfuldt røvet en postkasse.",
+    "failedlockpick": "Du fejlede i at røve postkassen."
+  },
+  
+  "error": {
+    "just_robbed": "Denne postkasse er netop blevet røvet, prøv igen senere.",
+    "nothing_found": "Du fandt ikke noget!",
+    "mailbox_not_found": "Ingen postkasse i nærheden!"
+  }
+}
