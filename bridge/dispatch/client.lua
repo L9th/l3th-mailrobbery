@@ -13,7 +13,7 @@ dispatch.sendCall = function(data)
       showDirection = false,
       showGender = true,
       showVehicle = false,
-      platePercentage = 50,
+      platePercentage = 0,
       showWeapon = false,
       takePhoto = false,
       removeTime = 1000 * 60 * 5,
@@ -25,11 +25,7 @@ dispatch.sendCall = function(data)
         radius = 40.0,
         flash = false,
       },
-      radius = {
-        enabled = false,
-        color = 3,
-        scale = 25.0,
-      },
+      radius = { },
       jobs = { "police", "sheriff" },
       playSound = true,
     })
