@@ -5,8 +5,8 @@ local inventory = require 'bridge.inventory.server'
 local mailCache = {}
 
 local function validObj(obj)
-  for _, v in pairs(clConfig.mailBoxes) do
-    if tonumber(v) == tonumber(obj) then
+  for _, model in pairs(clConfig.mailBoxes) do
+    if GetHashKey(model) == tonumber(obj) then
       return true
     end
   end
@@ -35,14 +35,47 @@ end
 RegisterNetEvent('mailboxRob:robMailbox', function(coords, obj)
   local src = source
   local ped = GetPlayerPed(src)
+  local playerCoords = GetEntityCoords(ped)
 
   if not validObj(obj) then
     if clConfig.debug then print(('[Mailbox] Invalid mailbox object: %s'):format(obj)) end
     return
   end
 
+  if #(playerCoords - coords) > 5.0 then
+    utils.notify({
+      source = src,
+      description = locale('error.too_far_from_mailbox'),
+      type = 'error'
+    })
+    if clConfig.debug then print(('[Mailbox] %s tried to rob too far from mailbox!'):format(GetPlayerName(src))) end
+    return
+  end
+
+  local allowedModelHashes = {}
+  for _, model in pairs(clConfig.mailBoxes) do
+    local hash = GetHashKey(model)
+    table.insert(allowedModelHashes, hash)
+  end
+
+  local nearbyEntities = GetEntitiesInRadius(playerCoords.x, playerCoords.y, playerCoords.z, 5.0, 3, true, allowedModelHashes)
+
+  if not nearbyEntities or #nearbyEntities == 0 then
+    print("Nearby Entities:")
+    for i, entity in ipairs(nearbyEntities) do
+      print(i, entity)
+    end
+    utils.notify({
+      source = src,
+      description = locale('error.mailbox_not_found'),
+      type = 'error'
+    })
+    if clConfig.debug then print(('[Mailbox] No valid mailbox near %s'):format(GetPlayerName(src))) end
+    return
+  end
+
   if alreadyRobbed(coords, obj) then
-    utils.notify({ source = source, description = locale('error.just_robbed'), type = 'error' })
+    utils.notify({ source = src, description = locale('error.just_robbed'), type = 'error' })
     return
   end
 
@@ -51,23 +84,19 @@ RegisterNetEvent('mailboxRob:robMailbox', function(coords, obj)
   local function getReward()
     local roll = math.random(1, 100)
     local cumulative = 0
-
     for _, reward in ipairs(svConfig.Reward) do
       cumulative = cumulative + reward.chance
       if roll <= cumulative then
         return reward
       end
     end
-
-    return nil -- fallback
   end
 
-  local selectedReward = getReward()
-  if selectedReward and selectedReward.item then
-    inventory.addItem(src, selectedReward.item, selectedReward.amount)
+  local reward = getReward()
+  if reward and reward.item then
+    inventory.addItem(src, reward.item, reward.amount)
   else
-    if clConfig.debug then print(('[Mailbox] No reward given to %s'):format(GetPlayerName(src))) end
-    utils.notify({ source = source, description = locale('error.nothing_found'), type = 'info' })
+    utils.notify({ source = src, description = locale('error.nothing_found'), type = 'info' })
   end
 
   CreateThread(function()

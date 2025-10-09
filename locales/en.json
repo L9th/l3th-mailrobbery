@@ -8,10 +8,12 @@
 
   "robbing": {
     "target_label": "Lockpick Mailbox",
+    "target_label2": "Break Open Mailbox",
     "label": "Robbing mailbox...",
     "cancelled": "You have cancelled robbing the mailbox.",
     "success": "You have successfully robbed the mailbox.",
-    "failedlockpick": "You have failed to lockpick the mailbox."
+    "failedlockpick": "You have failed to lockpick the mailbox.",
+    "failedbreak": "You have failed to break open the mailbox!"
   },
   
   "error": {

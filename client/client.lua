@@ -2,14 +2,44 @@ local client = require("configs.cl_config")
 local utils = require("utils.cl_utils")
 local dispatch = require("bridge.dispatch.client")
 
-local function playRobAnimation(ped)
+local function playParticleEffect(entity, effectName, assetName, scale)
+  if not HasNamedPtfxAssetLoaded(assetName) then
+    RequestNamedPtfxAsset(assetName)
+    while not HasNamedPtfxAssetLoaded(assetName) do
+      Wait(0)
+    end
+  end
+
+  UseParticleFxAssetNextCall(assetName)
+  local particle = StartParticleFxNonLoopedOnEntity(effectName, entity, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, scale, false, false,
+    false)
+end
+
+local function playLockpickAnim(ped)
   local animDict = 'missheistfbisetup1'
   local anim = 'hassle_intro_loop_f'
   lib.requestAnimDict(animDict)
   TaskPlayAnim(ped, animDict, anim, 8.0, -8.0, -1, 1, 0.0, false, false, false)
 end
 
-local function robMailbox(data)
+local function playCrowbarAnim(ped)
+  local animDict = 'random@mugging4'
+  local anim = 'struggle_loop_b_thief'
+
+  lib.requestAnimDict(animDict)
+  TaskPlayAnim(ped, animDict, anim, 4.0, -4.0, -1, 1+32, 0.0, false, false, false)
+
+  local crowbarHash = GetHashKey(client.item2)
+  RequestWeaponAsset(crowbarHash, 31, 0)
+  while not HasWeaponAssetLoaded(crowbarHash) do
+    Wait(10)
+  end
+
+  GiveWeaponToPed(ped, crowbarHash, 1, false, true)
+  SetCurrentPedWeapon(ped, crowbarHash, true)
+end
+
+local function robMailbox(data, method)
   if isRobbing then return end
   isRobbing = true
 
@@ -31,7 +61,7 @@ local function robMailbox(data)
       return
     end
 
-    if math.random(100) <= client.policeChance then
+    if math.random(100) <= (method == 'crowbar' and client.policeChance + client.policeChanceAdded or client.policeChance) then
       dispatch.sendCall({
         title = locale('dispatch.title'),
         code = locale('dispatch.code'),
@@ -45,20 +75,32 @@ local function robMailbox(data)
     end
 
     TaskTurnPedToFaceEntity(ped, entity, -1)
-    playRobAnimation(ped)
 
-    local success = utils.minigame()
+    if method == 'lockpick' then
+      playLockpickAnim(ped)
+    else
+      playCrowbarAnim(ped)
+    end
+
+    local success = utils.minigame(method)
 
     if success then
+
+      PlaySoundFrontend(-1, "Unlock_Success", "GTAO_FM_Events_Soundset", true)
+
+      if method == 'crowbar' then
+        playParticleEffect(entity, 'scr_paper_flies', 'scr_paper_flies', 1.0)
+      end
+
       local result = utils.progressBar({
-        duration = 10000,
+        duration = (method == 'crowbar' and client.duration2 or client.duration),
         label = locale('robbing.label'),
         useWhileDead = false,
         canCancel = true,
         disable = { car = true, move = true },
         anim = {
-          dict = 'amb@prop_human_bum_bin@idle_a',
-          clip = 'idle_a'
+          dict = 'oddjobs@shop_robbery@rob_till',
+          clip = 'loop', 
         }
       })
 
@@ -71,7 +113,10 @@ local function robMailbox(data)
       end
     else
       ClearPedTasks(ped)
-      utils.notify({ description = locale('robbing.failedlockpick'), type = 'error' })
+      utils.notify({
+        description = (method == 'crowbar' and locale('robbing.failedbreak') or locale('robbing.failedlockpick')),
+        type = 'error'
+      })
     end
 
     isRobbing = false
@@ -87,11 +132,29 @@ local function startUtils()
         icon = 'fa-solid fa-lock',
         items = client.item,
         distance = client.maxDistance,
-        onSelect = robMailbox,
+        onSelect = function(data)
+          robMailbox(data, 'lockpick')
+        end,
+      },
+    },
+    options2 = {
+      {
+        label = locale('robbing.target_label2'),
+        icon = 'fa-solid fa-lock',
+        items = client.item2,
+        distance = client.maxDistance,
+        onSelect = function(data)
+          robMailbox(data, 'crowbar')
+        end,
+        canInteract = function(entity, distance, coords, name)
+          local ped = PlayerPedId()
+          local weapon = GetSelectedPedWeapon(ped)
+          local requiredWeapon = joaat(client.item2)
+          return weapon == requiredWeapon
+        end
       },
     },
   })
 end
-
 
 startUtils()

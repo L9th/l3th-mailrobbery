@@ -101,16 +101,34 @@ utils.addModel = function(data)
     end
 end
 
-utils.minigame = function()
+utils.minigame = function(method)
     if client.minigame == 'sk-minigames' then
-        return exports["SK-Minigames"]:Start("lockpick", {
-            holeCount = 4,
-            speed = 15,
-            skipCountdown = 0
-        })
+        if method == 'crowbar' then
+            -- Harder, faster version for crowbar (strength-based)
+            return exports["SK-Minigames"]:Start("circles", {
+                time = 10,          -- shorter time window
+                speed = 25,         -- faster
+                circles = 3,        -- fewer, but harder
+            })
+        else
+            -- Default lockpick version
+            return exports["SK-Minigames"]:Start("lockpick", {
+                holeCount = 4,
+                speed = 15,
+                skipCountdown = 0
+            })
+        end
+
     elseif client.minigame == 'ox' then
-        return lib.skillCheck({'easy', 'medium', 'hard'}, {'w','a','s','d'})
+        if method == 'crowbar' then
+            -- Simpler skillcheck but with tighter timing (simulating brute force)
+            return lib.skillCheck({'medium', 'hard'}, {'a','d'})
+        else
+            -- Standard lockpick sequence
+            return lib.skillCheck({'easy', 'medium', 'hard'}, {'w','a','s','d'})
+        end
     end
 end
+
 
 return utils
