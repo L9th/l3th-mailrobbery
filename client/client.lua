@@ -11,7 +11,7 @@ local function playParticleEffect(entity, effectName, assetName, scale)
   end
 
   UseParticleFxAssetNextCall(assetName)
-  local particle = StartParticleFxNonLoopedOnEntity(effectName, entity, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, scale, false, false,
+  local particle = StartParticleFxNonLoopedOnEntity(effectName, entity, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, scale, false, false,
     false)
 end
 
@@ -86,10 +86,8 @@ local function robMailbox(data, method)
 
     if success then
 
-      PlaySoundFrontend(-1, "Unlock_Success", "GTAO_FM_Events_Soundset", true)
-
       if method == 'crowbar' then
-        playParticleEffect(entity, 'scr_paper_flies', 'scr_paper_flies', 1.0)
+        playParticleEffect(entity, 'ent_sht_paper_bails', 'core', 3.0)
       end
 
       local result = utils.progressBar({
@@ -136,8 +134,6 @@ local function startUtils()
           robMailbox(data, 'lockpick')
         end,
       },
-    },
-    options2 = {
       {
         label = locale('robbing.target_label2'),
         icon = 'fa-solid fa-lock',

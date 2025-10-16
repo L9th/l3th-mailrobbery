@@ -22,7 +22,6 @@ dispatch.sendCall = function(data)
         color = 1,
         sprite = 161,
         scale = 1.2,
-        radius = 40.0,
         flash = false,
       },
       radius = { },
