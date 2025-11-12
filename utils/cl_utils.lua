@@ -104,9 +104,9 @@ end
 utils.minigame = function(method)
   if client.minigame == 'sk-minigames' then
     if method == 'crowbar' then
-      -- Harder, faster version for crowbar (strength-based)
+      -- Harder, faster version for crowbar
       return exports["SK-Minigames"]:Start("arrowClicker", {
-        arrowCount = 1,
+        arrowCount = 10,
         time = 5000,
         text = locale('robbing.target_label2'),
       })
@@ -121,8 +121,8 @@ utils.minigame = function(method)
 
   elseif client.minigame == 'ox' then
     if method == 'crowbar' then
-      -- Simpler skillcheck but with tighter timing (simulating brute force)
-      return lib.skillCheck({'medium', 'hard'}, {'a','d'})
+      -- Simpler skillcheck but with tighter timing
+      return lib.skillCheck({'medium', 'hard', 'medium'}, {'a','d'})
     else
       -- Standard lockpick sequence
       return lib.skillCheck({'easy', 'medium', 'hard'}, {'w','a','s','d'})
