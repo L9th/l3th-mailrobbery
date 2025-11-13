@@ -4,15 +4,15 @@ local dispatch = require("bridge.dispatch.client")
 
 local function playParticleEffect(entity, effectName, assetName, scale)
   if not HasNamedPtfxAssetLoaded(assetName) then
-    RequestNamedPtfxAsset(assetName)
+    lib.requestNamedPtfxAsset(assetName)
     while not HasNamedPtfxAssetLoaded(assetName) do
       Wait(0)
     end
   end
 
   UseParticleFxAssetNextCall(assetName)
-  local particle = StartParticleFxNonLoopedOnEntity(effectName, entity, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, scale, false, false,
-    false)
+  lib.removeNamedPtfxAsset(assetName)
+  StartParticleFxNonLoopedOnEntity(effectName, entity, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, scale, false, false, false)
 end
 
 local function playLockpickAnim(ped)
@@ -30,13 +30,14 @@ local function playCrowbarAnim(ped)
   TaskPlayAnim(ped, animDict, anim, 4.0, -4.0, -1, 1+32, 0.0, false, false, false)
 
   local crowbarHash = GetHashKey(client.item2)
-  RequestWeaponAsset(crowbarHash, 31, 0)
+  lib.requestWeaponAsset(crowbarHash, 31)
   while not HasWeaponAssetLoaded(crowbarHash) do
     Wait(10)
   end
 
   GiveWeaponToPed(ped, crowbarHash, 1, false, true)
   SetCurrentPedWeapon(ped, crowbarHash, true)
+  RemoveWeaponAsset(crowbarHash)
 end
 
 local function robMailbox(data, method)
@@ -98,7 +99,7 @@ local function robMailbox(data, method)
         disable = { car = true, move = true },
         anim = {
           dict = 'oddjobs@shop_robbery@rob_till',
-          clip = 'loop', 
+          clip = 'loop',
         }
       })
 

@@ -1,10 +1,9 @@
-
 fx_version 'cerulean'
+game 'gta5'
 use_experimental_fxv2_oal 'yes'
 author 'L3th'
 description 'Mail Box Robbery'
 lua54 'yes'
-game 'gta5'
 
 files {
     'configs/*.lua',
@@ -19,22 +18,15 @@ shared_scripts {
 }
 
 client_scripts {
-	'client/*.lua',
-}
-
-ox_libs {
-	'math',
-	'locale',
+    'client/*.lua',
 }
 
 server_scripts {
-	'server/*.lua',
+    'server/*.lua',
 }
 
-escrow_ignore {
-    'bridge/**/*.lua',
-    'configs/*.lua',
-    'locales/*.json',
-    'utils/*.lua',
+
+ox_libs {
+    'math',
+    'locale',
 }
-dependency '/assetpacks'
