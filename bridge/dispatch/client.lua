@@ -71,6 +71,8 @@ dispatch.sendCall = function(data)
     }
 
     TriggerServerEvent('fd_dispatch:events:addAlert', alertData)
+  elseif client.dispatch == 'none' then
+    print('No dispatch system configured.')
   end
 end
 

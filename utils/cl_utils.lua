@@ -29,7 +29,6 @@ utils.progressBar = function(data)
       anim = data.anim,
       prop = data.prop,
     })
-
   elseif client.interaction == 'qb' then
     exports['qb-core']:Progressbar(data.label, data.label, data.duration, false, data.canCancel ~= false, {
       disableMovement = data.disable and data.disable.move or false,
@@ -72,7 +71,6 @@ utils.getTargetOptions = function(options)
         distance = options[i].distance or 2.0,
       }
     end
-
   elseif client.interaction == 'qb' then
     for i = 1, #options do
       targetOptions[i] = {
@@ -118,14 +116,27 @@ utils.minigame = function(method)
         skipCountdown = 0
       })
     end
-
   elseif client.minigame == 'ox' then
     if method == 'crowbar' then
       -- Simpler skillcheck but with tighter timing
-      return lib.skillCheck({'medium', 'hard', 'medium'}, {'a','d'})
+      return lib.skillCheck({ 'medium', 'hard', 'medium' }, { 'a', 'd' })
     else
       -- Standard lockpick sequence
-      return lib.skillCheck({'easy', 'medium', 'hard'}, {'w','a','s','d'})
+      return lib.skillCheck({ 'easy', 'medium', 'hard' }, { 'w', 'a', 's', 'd' })
+    end
+  elseif client.minigame == 'bl_ui' then
+    if method == 'crowbar' then
+      -- Harder, faster version for crowbar
+      return exports.bl_ui:Untangle(2, {
+        numberOfNodes = 10,
+        duration = 5000,
+      })
+    else
+      -- Default lockpick version
+      return exports.bl_ui:Untangle(1, {
+        numberOfNodes = 10,
+        duration = 5000,
+      })
     end
   end
 end
