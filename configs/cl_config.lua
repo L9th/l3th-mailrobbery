@@ -1,8 +1,8 @@
 return {
   debug = true, -- Enable debug messages in the server console and F8 console
-  minigame = 'sk-minigames', -- 'sk-minigames', 'ox' or make your own. ;)
   interaction = 'ox', -- 'ox', 'qb' or make your own. ;) (Target, Progressbar and notify)
-  dispatch = 'none',        -- 'none', 'tk_dispatch', 'ps-dispatch', 'cd_dispatch', 'fd-dispatch' or make your own. ;)
+  minigame = 'sk-minigames', -- 'sk-minigames', 'ox', 'bl_ui' or make your own. ;)
+  dispatch = 'tk_dispatch',  -- 'none', 'tk_dispatch', 'ps-dispatch', 'cd_dispatch', 'fd-dispatch' or make your own. ;)
 
   item = 'lockpick', -- Item required to rob mailbox / To see the target on mailbox
   item2 = 'WEAPON_CROWBAR', -- Item required to rob mailbox / To see the target on mailbox
