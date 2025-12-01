@@ -71,6 +71,9 @@ dispatch.sendCall = function(data)
     }
 
     TriggerServerEvent('fd_dispatch:events:addAlert', alertData)
+
+  elseif client.dispatch == 'custom' then
+    print('^3No Dispatch system configured.')
   end
 end
 

@@ -86,3 +86,30 @@ end)
 lib.callback.register('mailboxRob:isRobbed', function(source, coords, obj)
   return alreadyRobbed(coords, obj)
 end)
+
+
+local resourceName = 'l3th-mailrobbery'
+local currentVersion = GetResourceMetadata(resourceName, 'version', 0)
+
+local function checkversion()
+  if not currentVersion then
+    print("^1[Error]: Unable to determine current resource version for '" ..resourceName.. "'^0")
+    return
+  end
+  SetTimeout(1000, function()
+    PerformHttpRequest('https://api.github.com/repos/L9th/' ..resourceName.. '/releases/latest', function(status, response)
+      if status ~= 200 then return end
+      response = json.decode(response)
+      local latestVersion = response.tag_name
+      if not latestVersion or latestVersion == currentVersion then return end
+      if latestVersion ~= currentVersion then
+        print('^3An update is available for ' ..resourceName.. '^0')
+        print('^3Your Version: ^1' ..currentVersion.. '^0 | ^3Latest Version: ^2' ..latestVersion.. '^0')
+        print('^3Download the latest release from https://github.com/L9th/'..resourceName..'/releases/'..latestVersion..'^0')
+        print('^3For more information about this update visit our Discord: https://discord.gg/jK46kHYKxJ^0')
+      end
+    end, 'GET')
+  end)
+end
+
+checkversion()

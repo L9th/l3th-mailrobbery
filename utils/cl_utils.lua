@@ -19,7 +19,7 @@ utils.progressBar = function(data)
   local success
 
   if client.interaction == 'ox' then
-    success = lib.progressCircle({
+    success = lib.progressBar({
       duration = data.duration,
       position = 'bottom',
       label = data.label,
@@ -31,19 +31,33 @@ utils.progressBar = function(data)
     })
 
   elseif client.interaction == 'qb' then
-    exports['qb-core']:Progressbar(data.label, data.label, data.duration, false, data.canCancel ~= false, {
-      disableMovement = data.disable and data.disable.move or false,
-      disableCarMovement = data.disable and data.disable.car or false,
-    }, {
-      animDict = data.anim and data.anim.dict,
-      anim = data.anim and data.anim.clip,
-    }, {}, {}, function()
-      success = true
-      if data.onSuccess then data.onSuccess() end
-    end, function()
-      success = false
-      if data.onCancel then data.onCancel() end
-    end)
+    local QBCore = exports['qb-core']:GetCoreObject()
+
+    QBCore.Functions.Progressbar(
+      data.label,
+      data.label,
+      data.duration,
+      false,
+      data.canCancel ~= false,
+      {
+        disableMovement = data.disable and data.disable.move or false,
+        disableCarMovement = data.disable and data.disable.car or false,
+      },
+      data.anim and {
+        animDict = data.anim.dict,
+        anim = data.anim.clip,
+      } or {},
+      {},
+      {},
+      function()
+        success = true
+        if data.onSuccess then data.onSuccess() end
+      end,
+      function()
+        success = false
+        if data.onCancel then data.onCancel() end
+      end
+    )
 
     return
   end
@@ -79,7 +93,13 @@ utils.getTargetOptions = function(options)
         icon = options[i].icon,
         item = options[i].items,
         label = options[i].label,
-        action = options[i].onSelect,
+        action = function(entity, distance, data)
+          options[i].onSelect({
+            entity = entity,
+            distance = distance,
+            data = data
+          })
+        end,
         canInteract = options[i].canInteract,
         distance = options[i].distance or 2.0,
       }
@@ -127,6 +147,18 @@ utils.minigame = function(method)
       -- Standard lockpick sequence
       return lib.skillCheck({'easy', 'medium', 'hard'}, {'w','a','s','d'})
     end
+
+  elseif client.minigame == 'glitch-minigames' then
+    if method == 'crowbar' then
+      -- Harder, faster version for crowbar
+      return exports['glitch-minigames']:StartSurgeOverride( { 'E' }, 30, 3, false)
+    else
+      -- Default lockpick version
+      return exports['glitch-minigames']:StartSurgeOverride( { 'E' }, 20, 2, false)
+    end
+
+  elseif client.minigame == 'custom' then
+    print('^3No Minigame configured.')
   end
 end
 

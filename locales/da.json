@@ -7,7 +7,7 @@
   },
 
   "robbing": {
-    "target_label": "Låsoplukning af postkasse",
+    "target_label": "Dirklåsen af postkassen",
     "target_label2": "Bræk postkassen op",
     "label": "Røver postkassen...",
     "cancelled": "Du har afbrudt røveriet af postkassen.",

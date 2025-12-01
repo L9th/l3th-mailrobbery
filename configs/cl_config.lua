@@ -1,8 +1,8 @@
 return {
   debug = true, -- Enable debug messages in the server console and F8 console
-  minigame = 'sk-minigames', -- 'sk-minigames', 'ox' or make your own. ;)
-  interaction = 'ox', -- 'ox', 'qb' or make your own. ;) (Target, Progressbar and notify)
-  dispatch = 'tk_dispatch', -- 'tk_dispatch', 'ps-dispatch', 'cd_dispatch', 'fd-dispatch' or make your own. ;)
+  interaction = 'ox', -- 'ox', 'qb' or 'custom' (This is for Target, Progressbar and notify)
+  minigame = 'sk-minigames', -- 'sk-minigames', 'ox', 'glitch-minigames' or 'custom'
+  dispatch = 'tk_dispatch', -- tk_dispatch', 'ps-dispatch', 'cd_dispatch', 'fd-dispatch' or 'custom'
 
   item = 'lockpick', -- Item required to rob mailbox / To see the target on mailbox
   item2 = 'WEAPON_CROWBAR', -- Item required to rob mailbox / To see the target on mailbox
@@ -24,5 +24,5 @@ return {
   policeChance = 20, -- Chance to call the police (in percentage)
   policeChanceAdded = 25, -- Extra chance if using crowbar (in percentage)
 
-  resetTime = 1800000 -- Time (in seconds) until a mailbox can be robbed again
+  resetTime = 1800 -- Time (in seconds) until a mailbox can be robbed again. This is 30 minutes.
 }
