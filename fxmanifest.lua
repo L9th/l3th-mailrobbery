@@ -3,7 +3,7 @@ lua54 'yes'
 game 'gta5'
 use_experimental_fxv2_oal 'yes'
 author 'L3th'
-version 'v1.0.1'
+version 'v1.1.1'
 repository 'https://github.com/L9th/l3th-mailrobbery'
 description 'Mail Box Robbery'
 
