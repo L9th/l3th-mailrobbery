@@ -17,7 +17,6 @@ files {
 
 shared_scripts {
     '@ox_lib/init.lua',
-    '@lation_ui/init.lua',
 }
 
 ox_libs {
